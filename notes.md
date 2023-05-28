@@ -49,3 +49,40 @@ http.authorizeHttpRequests(requests -> requests.anyRequest().permitAll())
         .httpBasic(Customizer.withDefaults());
 return http.build();
 ```
+
+## Storing `UserDetails`
+
+- Only define 1 in the `ProjectSecurityConfig.java` which is the config file with annotation `@Configuration`.
+        - Spring will read and select the defined method of storing `UserDetails`.
+
+|Methods to Store|Description|
+|:-:|:-:|
+|`InMemoryUserDetailsManager`|Storing UserDetails such as username and password in memory. Typically used for demo application or testing scenarios where user information is static and not needed to be persisted in database.|
+|`JdbcUserDetailsManager`|Storing UserDetails in database with predefined SQL statements. Used for smaller application, not for production. The SQL scripts are predefined. If we want a different table name or different column name (e.g., email), then we need a new UserDetailsService and UserDetailsManager.|
+|`LdapUserDetailsManager`|*Uncommon* unless you have Ldap server with UserDetails.|
+
+## SQL Tables for `JdbcUserDetailsManager` for MySQL
+
+```sql
+CREATE TABLE `users` (
+        `id` INT NOT NULL AUTO_INCREMENT,
+        `username` VARCHAR(45) NOT NULL,
+        `password` VARCHAR(45) NOT NULL,
+        `enabled` INT NOT NULL,
+        PRIMARY KEY (`id`)
+)
+
+CREATE TABLE `authorities` (
+        `id` INT NOT NULL AUTO_INCREMENT,
+        `username` VARCHAR(45) NOT NULL,
+        `authority` VARCHAR(45) NOT NULL,
+        PRIMARY KEY (`id`)
+)
+
+INSERT IGNORE INTO `users` VALUES (NULL, 'leon', '12345', '1');
+INSERT IGNORE INTO `authorities` VALUES (NULL, 'leon', 'write');
+```
+
+- Can go with our own table name and column name (RECOMMENDED APPROACH).
+        - Cannot use `JdbcUserDetailsManager` for this case.
+        - Have to write own logic.

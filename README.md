@@ -11,3 +11,9 @@
 3. Authorization will be implemented using ROLES, AUTHORITIES.
 4. Method level security will be implemented along with custom filters in the authentication and authorization process.
 5. Application enhanced with OAUTH2/OpenID using JWT which is the most common security approach in the industry.
+
+|Spring Security Sections|Description|
+|:-:|:-:|
+|Basic|Very basic authentication with `application.properties`|
+|Section 2|Setting custom configurations for urls, denying all requests and permitting all requests|
+|Section 3|Using InMemoryUserDetailsManager (2 approaches)|
