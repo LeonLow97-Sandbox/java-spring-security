@@ -13,6 +13,7 @@
 
 ## New Annotations
 
-|   Annotations    |          Description           |
-| :--------------: | :----------------------------: |
-| `@ComponentScan` | Controllers in other packages. |
+|   Annotations    |                                                     Description                                                      |
+| :--------------: | :------------------------------------------------------------------------------------------------------------------: |
+| `@ComponentScan` |                                            Controllers in other packages.                                            |
+| `@Configuration` | Define all the configurations in the class. When Spring Boot starts up, all the beans will be scanned in that class. |
