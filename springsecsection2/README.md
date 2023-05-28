@@ -17,3 +17,17 @@
 | :--------------: | :------------------------------------------------------------------------------------------------------------------: |
 | `@ComponentScan` |                                            Controllers in other packages.                                            |
 | `@Configuration` | Define all the configurations in the class. When Spring Boot starts up, all the beans will be scanned in that class. |
+
+## Authentication certain endpoints
+
+```java
+@Bean
+SecurityFilterChain defauSecurityFilterChain(HttpSecurity http) throws Exception {
+    http.authorizeHttpRequests((requests) -> requests
+            .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards").authenticated()
+            .requestMatchers("/notices", "/contact").permitAll())
+            .formLogin(Customizer.withDefaults()).httpBasic(Customizer.withDefaults());
+    return http.build();
+}
+```
+
