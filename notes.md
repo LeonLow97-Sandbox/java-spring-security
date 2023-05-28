@@ -21,6 +21,9 @@
 ## Authentication certain endpoints
 
 ```java
+/**
+ * Custom Security Configurations
+ */
 @Bean
 SecurityFilterChain defauSecurityFilterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests((requests) -> requests
@@ -29,5 +32,20 @@ SecurityFilterChain defauSecurityFilterChain(HttpSecurity http) throws Exception
             .formLogin(Customizer.withDefaults()).httpBasic(Customizer.withDefaults());
     return http.build();
 }
-```
 
+/**
+ *  Configuration to deny all the requests
+ */
+http.authorizeHttpRequests(requests -> requests.anyRequest().denyAll())
+        .formLogin(Customizer.withDefaults())
+        .httpBasic(Customizer.withDefaults());
+return http.build();
+
+/**
+ *  Configuration to permit all the requests (Good for development)
+ */
+http.authorizeHttpRequests(requests -> requests.anyRequest().permitAll())
+        .formLogin(Customizer.withDefaults())
+        .httpBasic(Customizer.withDefaults());
+return http.build();
+```
