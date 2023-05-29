@@ -102,12 +102,23 @@ return http.build();
 
 <img src="./lecture_notes/different-pwd-mgmt.jpg" />
 
-## Different Implementations of `PasswordEncoder`
+## Different Implementations of `PasswordEncoder` (interface to support password encoding)
 
 - `NoOpPasswordEncorder`: password in plain text (not recommended for production, for testing purposes only).
 - `StandardPasswordEncoder`: for legacy purposes and not secure (not recommended for production).
 - `Pbkdf2PasswordEncoder`: not secure, can apply brute-force attack to derive the correct plain-text password with strong GPU (not recommended for production).
 - ✅ `BCryptPasswordEncorder`: Used extensively, can set salt rounds, need higher CPU to hash the password. ✅✅✅
+        - `BCryptPasswordEncoder()`: default salt rounds of 10.
+        - `BCryptPasswordEncoder(20)`: salt rounds of 20. must be 4 - 31.
 - ✅ `SCryptPasswordEncorder`: Advanced version of BCryptPasswordEncoder. Takes into account CPU and memory. Performance issue because it takes a long time to process whenever we hash password.
 - ✅ `Argon2PasswordEncorder`: Takes into account CPU, memory and multiple threads. Performance issue because it takes a long time to process whenever we hash password.
 
+## Custom Authentication Provider
+
+- Instead of using the default `DaoAuthenticationProvider`, we should use a custom authentication provider.
+- Can have multiple authentication providers
+        - Requirement 1: accept username and password
+        - Requirement 2: accept OAUTH2 authentication
+        - Requirement 3: accept OTP authentication
+- `authenticate()` method receives and returns Authentication object. Implement all the custom authentication logic inside `authenticate` method.
+- Deleted custom `UserDetailsService` because we no longer want to use `DaoAuthenticationProvider`

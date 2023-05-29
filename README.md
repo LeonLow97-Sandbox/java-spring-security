@@ -16,4 +16,6 @@
 |:-:|:-:|
 |Basic|Very basic authentication with `application.properties`|
 |Section 2|Setting custom configurations for urls, denying all requests and permitting all requests|
-|Section 3|Using InMemoryUserDetailsManager (2 approaches)|
+|Section 3|Using InMemoryUserDetailsManager (2 approaches), configuring custom UserDetailsService|
+|Section 4|Adding `BCryptPasswordEncoder` for password hashing.|
+|Section 5|Creating custom `AuthenticationProvider` instead of using the default implementation of `DaoAuthenticationProvider`.|
