@@ -19,9 +19,10 @@ public class ProjectSecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((requests) -> requests
+        http.csrf().disable()
+                .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards").authenticated()
-                .requestMatchers("/notices", "/contact").permitAll())
+                .requestMatchers("/notices", "/contact", "/register").permitAll())
                 .formLogin(Customizer.withDefaults()).httpBasic(Customizer.withDefaults());
         return http.build();
     }
@@ -29,7 +30,7 @@ public class ProjectSecurityConfig {
     // Database details will be inserted into this bean
     // @Bean
     // public UserDetailsService userDetailsService(DataSource dataSource) {
-    //     return new JdbcUserDetailsManager(dataSource);
+    // return new JdbcUserDetailsManager(dataSource);
     // }
 
     // Deprecated because it is not recommended for production (password are treated as plain-text)
