@@ -105,3 +105,10 @@ INSERT IGNORE INTO `authorities` VALUES (NULL, 'leon', 'write');
         - Cannot use `JdbcUserDetailsManager` for this case.
         - Have to write own logic.
 
+## `UserDetailsService`
+
+- `UserDetailsService` interface is responsible for loading user-specific data during the authentication process.
+- It provides a single method `loadUserByUsername()` that takes a username as input and returns a `UserDetails` object containing the user's information.
+- Can create custom implementations of `UserDetailsService` to load user details from various sources such as database, an LDAP server, or an external API.
+- Spring Security provides some built-in implementations such as `JdbcUserDetailsManager` for database-backed user details, `LdapUserDetailsService` for LDAP authentication, etc.
+- Can have multiple implementation of `UserDetailsService` if needed, but only one can be used by an `AuthenticationProvider` at a time.
