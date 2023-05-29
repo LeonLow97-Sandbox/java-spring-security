@@ -81,30 +81,10 @@ return http.build();
 
 ## SQL Tables for `JdbcUserDetailsManager` for MySQL
 
-```sql
-CREATE TABLE `users` (
-        `id` INT NOT NULL AUTO_INCREMENT,
-        `username` VARCHAR(45) NOT NULL,
-        `password` VARCHAR(45) NOT NULL,
-        `enabled` INT NOT NULL,
-        PRIMARY KEY (`id`)
-)
-
-CREATE TABLE `authorities` (
-        `id` INT NOT NULL AUTO_INCREMENT,
-        `username` VARCHAR(45) NOT NULL,
-        `authority` VARCHAR(45) NOT NULL,
-        PRIMARY KEY (`id`)
-)
-
-INSERT IGNORE INTO `users` VALUES (NULL, 'leon', '12345', '1');
-INSERT IGNORE INTO `authorities` VALUES (NULL, 'leon', 'write');
-```
-
 - Can go with our own table name and column name (RECOMMENDED APPROACH).
         - Cannot use `JdbcUserDetailsManager` for this case.
         - Have to write own logic.
-
+ 
 ## `UserDetailsService`
 
 - `UserDetailsService` interface is responsible for loading user-specific data during the authentication process.
@@ -112,3 +92,22 @@ INSERT IGNORE INTO `authorities` VALUES (NULL, 'leon', 'write');
 - Can create custom implementations of `UserDetailsService` to load user details from various sources such as database, an LDAP server, or an external API.
 - Spring Security provides some built-in implementations such as `JdbcUserDetailsManager` for database-backed user details, `LdapUserDetailsService` for LDAP authentication, etc.
 - Can have multiple implementation of `UserDetailsService` if needed, but only one can be used by an `AuthenticationProvider` at a time.
+
+## `UserDetailsManager`
+
+- From Spring Security `UserDetailsManager`, used in an application to allow create, delete, update, select, change password, etc.
+- However, we typically create our own implementations of the CRUD for users in our own controllers.
+
+## Encoding vs Encryption vs Hashing
+
+<img src="./lecture_notes/different-pwd-mgmt.jpg" />
+
+## Different Implementations of `PasswordEncoder`
+
+- `NoOpPasswordEncorder`: password in plain text (not recommended for production, for testing purposes only).
+- `StandardPasswordEncoder`: for legacy purposes and not secure (not recommended for production).
+- `Pbkdf2PasswordEncoder`: not secure, can apply brute-force attack to derive the correct plain-text password with strong GPU (not recommended for production).
+- ✅ `BCryptPasswordEncorder`: Used extensively, can set salt rounds, need higher CPU to hash the password. ✅✅✅
+- ✅ `SCryptPasswordEncorder`: Advanced version of BCryptPasswordEncoder. Takes into account CPU and memory. Performance issue because it takes a long time to process whenever we hash password.
+- ✅ `Argon2PasswordEncorder`: Takes into account CPU, memory and multiple threads. Performance issue because it takes a long time to process whenever we hash password.
+
