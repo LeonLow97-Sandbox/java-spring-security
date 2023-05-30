@@ -122,3 +122,21 @@ return http.build();
         - Requirement 3: accept OTP authentication
 - `authenticate()` method receives and returns Authentication object. Implement all the custom authentication logic inside `authenticate` method.
 - Deleted custom `UserDetailsService` because we no longer want to use `DaoAuthenticationProvider`
+
+## Pre-Flight request by browser
+
+- When a browser makes a cross-origin request to a backend server, it first performs a pre-flight request to determine if the backend server allows the actual API request.
+- The pre-flight request is an HTTP OPTIONS request that the browser sends to the server with the intention of checking the server's CORS (Cross-Origin Resource Sharing) policy. 
+- The browser includes certain *headers* in the pre-flight request, such as Origin and Access-Control-Request-Method, to provide information about the intended cross-origin request.
+- If the server allows the specific cross-origin request from the browser, it responds with appropriate headers, including Access-Control-Allow-Origin, Access-Control-Allow-Methods, and others, indicating that the actual API request can proceed.
+
+<img src="./lecture_notes/preflight-request.jpg" />
+
+- In the picture above, it shows that the preflight request was made before the actual API request.
+
+## CORS Configuration
+
+- `AllowedMethods`: Specifies which HTTP methods are allowed for cross-origin requests, typically including GET and POST.
+- `AllowedCredentials`: Indicates whether the server can accept credentials (e.g., cookies, HTTP authentication) from the client in cross-origin requests.
+- `AllowedHeaders`: Defines the HTTP headers that are allowed to be included in cross-origin requests.
+- `MaxAge`: Specifies the maximum time (in seconds) that the browser can cache the CORS configuration, reducing the number of preflight requests made within that time frame.
