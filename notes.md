@@ -196,3 +196,7 @@ protected void doFilterInternal(HttpServletRequest request, HttpServletResponse 
 ## Authentication vs Authorization
 
 <img src="./lecture_notes/authentication-vs-authorization.png" />
+
+- Authorities/Roles information in Spring Security is stored inside `GrantedAuthority`.
+- `SimpleGrantedAuthority` is the default implementation class of GrantedAuthority interface inside Spring Security framework.
+
