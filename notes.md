@@ -150,3 +150,44 @@ return http.build();
 - To handle CSRF attack, application needs to determine if HTTP request is generated via the application's user interface.
     - Use a CSRF token which is a secure random token that is used to prevent CSRF attacks.
     - CSRF related cookie in browser.
+- `CsrfTokenRequestAttributeHandler`: Implementation of `CsrfTokenRequestHandler` interface that is capable of making the `CsrfToken` available as a request attribute and resolving the token value as either a header or parameter value of the request.
+- Sent to UI Applicatoin
+    - `DEFAULT_CSRF_COOKIE_NAME`: "XSRF-TOKEN"
+    - `DEFAULT_CSRF_HEADER_NAME`: "X-XSRF-TOKEN"
+    - `withHttpOnlyFalse`: to allows javascript application in Angular to read cookie value.
+
+## CSRF Procedure
+
+```js
+// Getting cookie from browser during user login
+let xsrf = getCookie('XSRF-TOKEN')!;
+window.sessionStorage.setItem("XSRF-TOKEN", xsrf);
+```
+
+```js
+// Before sending any request to Backend Server
+let xsrf = sessionStorage.getItem("XSRF-TOKEN");
+if (xsrf) {
+    httpHeaders = httpHeaders.append("X-XSRF-TOKEN", xsrf);
+}
+```
+
+```java
+@Override
+protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+        FilterChain filterChain) throws ServletException, IOException {
+    CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+    if (null != csrfToken.getHeaderName()) {
+        response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
+    }
+    filterChain.doFilter(request, response);
+}
+```
+
+## Configuration Terms
+
+- `.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))`: creating `JSESSIONID` after login operation. Included this because we are using our own UI for authentication instead of the default Spring Security UI for authentication.
+
+## Filters in Java Spring Security
+
+- Filters are similar to middlewares.
