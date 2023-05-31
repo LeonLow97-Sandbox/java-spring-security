@@ -136,6 +136,7 @@ return http.build();
 
 ## CORS Configuration
 
+- As part of the CORS policy, Domain, Port & Scheme (HTTP/HTTPS) are considered to identify "other origins".
 - `AllowedMethods`: Specifies which HTTP methods are allowed for cross-origin requests, typically including GET and POST.
 - `AllowedCredentials`: Indicates whether the server can accept credentials (e.g., cookies, HTTP authentication) from the client in cross-origin requests.
 - `AllowedHeaders`: Defines the HTTP headers that are allowed to be included in cross-origin requests.
@@ -190,4 +191,8 @@ protected void doFilterInternal(HttpServletRequest request, HttpServletResponse 
 
 ## Filters in Java Spring Security
 
-- Filters are similar to middlewares.
+- Filters are similar to middleware.
+
+## Authentication vs Authorization
+
+<img src="./lecture_notes/authentication-vs-authorization.png" />
