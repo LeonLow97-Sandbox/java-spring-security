@@ -126,7 +126,7 @@ return http.build();
 ## Pre-Flight request by browser
 
 - When a browser makes a cross-origin request to a backend server, it first performs a pre-flight request to determine if the backend server allows the actual API request.
-- The pre-flight request is an HTTP OPTIONS request that the browser sends to the server with the intention of checking the server's CORS (Cross-Origin Resource Sharing) policy. 
+- The pre-flight request is an HTTP OPTIONS request that the browser sends to the server with the intention of checking the server's CORS (Cross-Origin Resource Sharing) policy.
 - The browser includes certain *headers* in the pre-flight request, such as Origin and Access-Control-Request-Method, to provide information about the intended cross-origin request.
 - If the server allows the specific cross-origin request from the browser, it responds with appropriate headers, including Access-Control-Allow-Origin, Access-Control-Allow-Methods, and others, indicating that the actual API request can proceed.
 
@@ -140,3 +140,13 @@ return http.build();
 - `AllowedCredentials`: Indicates whether the server can accept credentials (e.g., cookies, HTTP authentication) from the client in cross-origin requests.
 - `AllowedHeaders`: Defines the HTTP headers that are allowed to be included in cross-origin requests.
 - `MaxAge`: Specifies the maximum time (in seconds) that the browser can cache the CORS configuration, reducing the number of preflight requests made within that time frame.
+
+## CSRF Security Attack
+
+- CSRF (Cross-Site Request Forgery) exploits the trust of a user's authenticated session to perform unwanted actions.
+- Does not directly steal the user's identity.
+- Spring Security provides protection against CSRF **by default**.
+- Spring Security applies CSRF protection to all HTTP methods, excluding GET, to prevent unauthorized actions.
+- To handle CSRF attack, application needs to determine if HTTP request is generated via the application's user interface.
+    - Use a CSRF token which is a secure random token that is used to prevent CSRF attacks.
+    - CSRF related cookie in browser.
