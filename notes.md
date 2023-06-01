@@ -249,9 +249,22 @@ private Set<Authority> authorities;
 // SecurityFilterChain
 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
 .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
+.addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
+.addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
 
 // Debugger
-RequestValidationBeforeFilter
+AuthoritiesLoggingAtFilter
 BasicAuthenticationFilter
 CsrfCookieFilter
+AuthoritiesLoggingAfterFilter
 ```
+
+## `GenericFilterBean` and `OncePerRequestFilter`
+
+- Can include the following filters into our own custom filters.
+- `GenericFilterBean`: abstract class. Implementation of `Filter` interface. Provides details of config parameters, init parameters, and servlet context parameters configured in web.xml.
+- `OncePerRequestFilter`: filter is executed only once per request.
+    - Previously, in our custom filters, we write our business logic in the method `doFilter()` but now this method is being used to check whether the filter has been invoked.
+    - So, we cannot override the `doFilter()` method in the `OncePerRequestFilter`.
+    - To override the business logic, we will write it inside the `doFilterInternal()` method.
+    - Can use `shouldNotFilter()` method to have exceptional filtering scenarios. E.g., maybe you want this filter to be applied to certain requests.
