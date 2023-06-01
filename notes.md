@@ -284,3 +284,12 @@ http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 
 - `Issuer`: Person or organization issuing the token.
 - `Subject`: JWT Token
+- In Angular, saving the JWT Token in the browser session storage after receiving it from the response header in Spring Security.
+        - `window.sessionStorage.setItem("Authorization", responseData.headers.get('Authorization')!);`
+- In Angular, for every request, send back the JWT Token to Spring Security to validate the token.
+    ```js
+    let authorization = sessionStorage.getItem('Authorization')
+    if (authorization) {
+            httpHeaders = httpHeaders.append('Authozation', authorization);
+    }
+    ```

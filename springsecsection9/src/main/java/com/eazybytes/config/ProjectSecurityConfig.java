@@ -4,6 +4,7 @@ import com.eazybytes.filter.AuthoritiesLoggingAfterFilter;
 import com.eazybytes.filter.AuthoritiesLoggingAtFilter;
 import com.eazybytes.filter.CsrfCookieFilter;
 import com.eazybytes.filter.JWTTokenGeneratorFilter;
+import com.eazybytes.filter.JWTTokenValidatorFilter;
 import com.eazybytes.filter.RequestValidationBeforeFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
@@ -50,6 +51,7 @@ public class ProjectSecurityConfig {
                         .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
                         .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
                         .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
+                        .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests((requests)->requests
                         // .requestMatchers("/myAccount").hasAuthority("VIEWACCOUNT")
                         // .requestMatchers("/myBalance").hasAnyAuthority("VIEWACCOUNT","VIEWBALANCE")
