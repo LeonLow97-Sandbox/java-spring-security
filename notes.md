@@ -1,4 +1,6 @@
-# Spring Security with Basic Authentication
+# Spring Security
+
+- [Understanding Spring Security Internal Flow](https://www.youtube.com/watch?v=caCJAJC41Rk&ab_channel=JavaBrains)
 
 ## Spring Security Internal Flow (Filters, Authentication Manager, Authentication Providers)
 
@@ -12,6 +14,8 @@
   - Can have multiple authentication provider and write authentication logic.
 
 ## Overview of how `AuthenticationProvider` is used in Spring Security
+
+<img src="./lecture_notes/spring-security-internal-flow.png" />
 
 1. **Authentication Request**: When a user tries to authenticate, typically by submitting a login form with a username and password, an authentication request is triggered.
 2. **Authentication Token**: The provided credentials (username and password) are encapsulated in an `Authentication` object. The `UsernamePasswordAuthenticationToken` is an implementation of the `Authentication` interface to carry the user's credentials (username and password) during the authentication process in Spring Security.
@@ -28,6 +32,12 @@
         - The more appropriate `AuthenticationProvider` is selected based on the type of `Authentication` object being processed.
 
 -----
+
+## Spring Security Internal Flow (ChatGPT)
+
+1. User enters credentials into the login form.
+2. The request passes through the Spring Security filters for the first pass, including the `UsernamePasswordAuthenticationFilter`, which extracts the credentials and creates an `Authentication` object.
+3. The `AuthenticationManager` receives the 
 
 ## New Annotations
 
@@ -200,3 +210,23 @@ protected void doFilterInternal(HttpServletRequest request, HttpServletResponse 
 - Authorities/Roles information in Spring Security is stored inside `GrantedAuthority`.
 - `SimpleGrantedAuthority` is the default implementation class of GrantedAuthority interface inside Spring Security framework.
 
+```java
+// Entity class
+@JsonIgnore
+@OneToMany(mappedBy="customer",fetch=FetchType.EAGER)
+private Set<Authority> authorities;
+```
+
+- Using `@OneToMany` to tell Spring Data JPA that a single customer can have many authorities/roles.
+
+## Configuring Authorities
+
+- `hasAuthority()`: checks if a user has a specific authority.
+- `hasAnyAuthority()`: checks if a user has any of the specified authorities.
+- `access()`: used to apply custom access control rules based on SpEL expressions.
+
+## Configuring Roles
+
+- `hasRole()`
+- `hasAnyRole()`
+- `access()`
