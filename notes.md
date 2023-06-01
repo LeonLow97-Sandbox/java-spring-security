@@ -243,6 +243,7 @@ private Set<Authority> authorities;
 - Create own filters by implementing the **Filter** interface from the `jakarta.servlet` package.
 - Override the `doFilter()` method to have own custom logic.
 - `doFilter()` accepts 3 parameters: `ServletRequest`, `ServletResponse` and `FilterChain`.
+- `chain.doFilter(request, response);`: invoking the next filter in the filter chain.
 
 ```java
 // SecurityFilterChain
