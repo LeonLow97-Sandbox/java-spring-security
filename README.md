@@ -12,13 +12,14 @@
 4. Method level security will be implemented along with custom filters in the authentication and authorization process.
 5. Application enhanced with OAUTH2/OpenID using JWT which is the most common security approach in the industry.
 
-|Spring Security Sections|Description|
-|:-:|:-:|
-|Basic|Very basic authentication with `application.properties`|
-|Section 2|Setting custom configurations for urls, denying all requests and permitting all requests|
-|Section 3|Using InMemoryUserDetailsManager (2 approaches), configuring custom UserDetailsService|
-|Section 4|Adding `BCryptPasswordEncoder` for password hashing.|
-|Section 5|Creating custom `AuthenticationProvider` instead of using the default implementation of `DaoAuthenticationProvider`.|
-|Section 6|Accounting for CORS policy and CSRF Attacks.|
-|Section 7|Authorization with authority and roles.|
-|Section 8|Implementing Custom Filters with `addFilterBefore`, `addFilterAfter` and `addFilterAt`.|
+| Spring Security Sections |                                                     Description                                                      |
+| :----------------------: | :------------------------------------------------------------------------------------------------------------------: |
+|          Basic           |                               Very basic authentication with `application.properties`                                |
+|        Section 2         |               Setting custom configurations for urls, denying all requests and permitting all requests               |
+|        Section 3         |                Using InMemoryUserDetailsManager (2 approaches), configuring custom UserDetailsService                |
+|        Section 4         |                                 Adding `BCryptPasswordEncoder` for password hashing.                                 |
+|        Section 5         | Creating custom `AuthenticationProvider` instead of using the default implementation of `DaoAuthenticationProvider`. |
+|        Section 6         |                                     Accounting for CORS policy and CSRF Attacks.                                     |
+|        Section 7         |                                       Authorization with authority and roles.                                        |
+|        Section 8         |               Implementing Custom Filters with `addFilterBefore`, `addFilterAfter` and `addFilterAt`.                |
+|        Section 9         |                   Implementing JWT and adding 2 Filters for generating and validating JWT Tokens.                    |
