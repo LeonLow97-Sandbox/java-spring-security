@@ -268,3 +268,4 @@ AuthoritiesLoggingAfterFilter
     - So, we cannot override the `doFilter()` method in the `OncePerRequestFilter`.
     - To override the business logic, we will write it inside the `doFilterInternal()` method.
     - Can use `shouldNotFilter()` method to have exceptional filtering scenarios. E.g., maybe you want this filter to be applied to certain requests.
+

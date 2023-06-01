@@ -21,4 +21,4 @@
 |Section 5|Creating custom `AuthenticationProvider` instead of using the default implementation of `DaoAuthenticationProvider`.|
 |Section 6|Accounting for CORS policy and CSRF Attacks.|
 |Section 7|Authorization with authority and roles.|
-|Section 8||
+|Section 8|Implementing Custom Filters with `addFilterBefore`, `addFilterAfter` and `addFilterAt`.|
