@@ -48,7 +48,6 @@ public class JWTTokenValidatorFilter  extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    // Filter executes for all requests except "/user"
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         return request.getServletPath().equals("/user");

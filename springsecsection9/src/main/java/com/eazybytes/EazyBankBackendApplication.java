@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @SpringBootApplication
-@EnableWebSecurity(debug = true) // FOR DEVELOPMENT ONLY
+// @EnableWebSecurity(debug = true) // FOR DEVELOPMENT ONLY
 @EnableJpaRepositories("com.eazybytes.repository") // optional
 @EntityScan("com.eazybytes.model") // optional
 public class EazyBankBackendApplication {
