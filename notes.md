@@ -195,9 +195,15 @@ protected void doFilterInternal(HttpServletRequest request, HttpServletResponse 
 }
 ```
 
-## Configuration Terms
+## `JSESSIONID`
 
 - `.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))`: creating `JSESSIONID` after login operation. Included this because we are using our own UI for authentication instead of the default Spring Security UI for authentication.
+
+```java
+http.securityContext((context) -> context
+                .requireExplicitSave(false))
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+```
 
 ## Filters in Java Spring Security
 
@@ -215,7 +221,7 @@ protected void doFilterInternal(HttpServletRequest request, HttpServletResponse 
 // Entity class
 @JsonIgnore
 @OneToMany(mappedBy="customer",fetch=FetchType.EAGER)
-private Set<Authority> authorities;
+private Set<Authority> authorities
 ```
 
 - Using `@OneToMany` to tell Spring Data JPA that a single customer can have many authorities/roles.
@@ -269,3 +275,12 @@ AuthoritiesLoggingAfterFilter
     - To override the business logic, we will write it inside the `doFilterInternal()` method.
     - Can use `shouldNotFilter()` method to have exceptional filtering scenarios. E.g., maybe you want this filter to be applied to certain requests.
 
+## JWT Token Configuration
+
+```java
+// Inside Config class
+http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // tells Spring not to generate any session by itself, e.g., JSESSIONID
+```
+
+- `Issuer`: Person or organization issuing the token.
+- `Subject`: JWT Token
