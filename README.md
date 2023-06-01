@@ -20,4 +20,5 @@
 |Section 4|Adding `BCryptPasswordEncoder` for password hashing.|
 |Section 5|Creating custom `AuthenticationProvider` instead of using the default implementation of `DaoAuthenticationProvider`.|
 |Section 6|Accounting for CORS policy and CSRF Attacks.|
-|Section 7|Handling user roles for authorization.|
+|Section 7|Authorization with authority and roles.|
+|Section 8||

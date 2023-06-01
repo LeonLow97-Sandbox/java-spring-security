@@ -208,6 +208,7 @@ protected void doFilterInternal(HttpServletRequest request, HttpServletResponse 
 <img src="./lecture_notes/authentication-vs-authorization.png" />
 
 - Authorities/Roles information in Spring Security is stored inside `GrantedAuthority`.
+    - Inside `UserDetails` interface which is a contract of the user inside the Spring Security, the authorities of a user stored in the form of collection in `GrantedAuthority`.
 - `SimpleGrantedAuthority` is the default implementation class of GrantedAuthority interface inside Spring Security framework.
 
 ```java
@@ -227,6 +228,29 @@ private Set<Authority> authorities;
 
 ## Configuring Roles
 
-- `hasRole()`
-- `hasAnyRole()`
-- `access()`
+- `hasRole()`: checks if the authenticated user has a specific role.
+- `hasAnyRole()`: checks if the authenticated user has any of the specified roles.
+- `access()`: defines access rules based on SpEL (Spring Expression Language) expressions.
+
+## Internal Filters of Spring Security
+
+- For DEVELOPMENT only
+    - `@EnableWebSecurity(debug = true)` to see the debugging of the security details.
+    - `logging.level.org.springframework.security.web.FilterChainProxy=DEBUG`: enable logging details by adding this line into `application.properties`.
+
+## Custom Filters in Spring Security
+
+- Create own filters by implementing the **Filter** interface from the `jakarta.servlet` package.
+- Override the `doFilter()` method to have own custom logic.
+- `doFilter()` accepts 3 parameters: `ServletRequest`, `ServletResponse` and `FilterChain`.
+
+```java
+// SecurityFilterChain
+.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+.addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
+
+// Debugger
+RequestValidationBeforeFilter
+BasicAuthenticationFilter
+CsrfCookieFilter
+```
