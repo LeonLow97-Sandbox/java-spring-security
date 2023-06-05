@@ -290,6 +290,15 @@ http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
     ```js
     let authorization = sessionStorage.getItem('Authorization')
     if (authorization) {
-            httpHeaders = httpHeaders.append('Authozation', authorization);
+            httpHeaders = httpHeaders.append('Authorization', authorization);
     }
     ```
+
+# Method Level Security
+
+- `@EnableMethodSecurity`
+        - properties: `prePostEnabled`, `securedEnabled`, `jsr250Enabled`
+- Invocation authorization
+- Filtering authorization
+- `@PostAuthorize`: used when you want to evaluate the object that is sent back to the user.
+- `@PreAuthorize`: used to check whether the user can access the method.
