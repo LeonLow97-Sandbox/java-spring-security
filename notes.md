@@ -329,3 +329,13 @@ http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 - Resource Server: This is the server where the APIs, services that client want to consume are hosted. Validates Access Token with the Auth Server.
 - Scopes: These are the granular permissions the Client wants, such as access to data or to perform certain actions.
 
+## Why is Implicit Flow less secure than OAuth 2.0?
+
+|Security Concerns|Implicit Flow|OAuth 2.0 Flow|
+|---|---|---|
+|Access Token Exposure|Access token is exposed in the browser's URL fragment, increasing the risk of leakage and potential unauthorized access.|Access token is transmitted securely to the client's backend server and not exposed to the client-side application.|
+|Token Validation|Lack of token validation on the client side.|Tokens are validated by the authorization server, ensuring authenticity and integrity.|
+|Token Revocation|Lack of a straightforward mechanism for token revocation, reducing control over token lifetimes.|Token revocation is supported, allowing better control over access and addressing scenarios like device compromise or user revocation.|
+|Centralized Management|Decentralized token management, relying on client-side implementations.|Token management occurs centrally within the authorization server, minimizing inconsistencies and vulnerabilities.|
+
+- *Token Revocation*: process of invalidating or terminating an access token before its expiration time. Ensures the secure management of access tokens, maintaining control over resource access, and mitigating potential risks and unauthorized access.
