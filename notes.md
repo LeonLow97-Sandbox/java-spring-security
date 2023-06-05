@@ -304,3 +304,28 @@ http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 - `@PreAuthorize`: used to check whether the user can access the method.
 - `@PreFilter`: applied to type Collection interface like List, Set, Map, etc.
 - `@PostFilter`: return type must be of type Collection interface.
+
+# OAUTH2
+
+- **Separate Auth server** for Authentication & Authorization.
+- Free and Open Source Protocol.
+- Uses an access token which provides limited access to someone, without handing over full control in the form of the master key.
+- OAuth framework creates new grant types:
+    - Authorization Code
+    - PKCE
+    - Client Credentials
+    - Device Code (E.g., Apple TV, Android TV): No keyboard to enter credentials
+    - Refresh Token
+    - Implicit Flow (Legacy)
+    - Password Grant (Legacy)
+- [Using OAuth 2.0 to Access Google APIs](https://developers.google.com/identity/protocols/oauth2)
+- [OAuth 2.0 Playground](https://oauth.com/playground)
+
+## OAUTH2 Terminology
+
+- Resource owner: It is the end user.
+- Client: Third party application trying to interact with our application.
+- Authorization Server: The server which knows about resource owner. Resource owner should have an account in this server. Issues the Access Token.
+- Resource Server: This is the server where the APIs, services that client want to consume are hosted. Validates Access Token with the Auth Server.
+- Scopes: These are the granular permissions the Client wants, such as access to data or to perform certain actions.
+
