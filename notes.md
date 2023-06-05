@@ -310,6 +310,9 @@ http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 - **Separate Auth server** for Authentication & Authorization.
 - Free and Open Source Protocol.
 - Uses an access token which provides limited access to someone, without handing over full control in the form of the master key.
+- OAuth 2.0 resolves the following problems:
+    - The client need to send the user credentials every time and authentication logic has to be executed every time with all the requests.
+    - The authentication and authorization logic being maintained in different places.
 - OAuth framework creates new grant types:
     - Authorization Code
     - PKCE
@@ -364,3 +367,24 @@ http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 - With OpenID Connect, applications can share the identities easily and standard way.
 - While OAuth 2.0 focuses on authorization and access control, it does not provide a standardized way to obtain user identity details beyond the scope of access control.
 - With the user credentials in the client, the client can use it to populate user profile information or pre-fill email fields in the client application, or use the details for suer analytics and insights.
+
+## Dependency
+
+- By adding this dependency, Spring Boot will act as the client for the OAuth 2.0 Authorization.
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-oauth2-client</artifactId>
+</dependency>
+```
+
+- `CommonOAuth2Provider` enum class can be used to configure most famous social logic Auth providers like Google, GitHub, Facebook, etc.
+- Another simpler way is to add the client id and client secret to `application.properties`
+
+```
+spring.security.oauth2.client.registration.github.client-id=
+spring.security.oauth2.client.registration.github.client-secret=
+```
+
+- In this project, we use GitHub as the authorization server. In reality, larger organizations have their own authorization server and can self-configure the auth server.
