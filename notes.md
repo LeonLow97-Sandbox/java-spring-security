@@ -339,3 +339,28 @@ http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 |Centralized Management|Decentralized token management, relying on client-side implementations.|Token management occurs centrally within the authorization server, minimizing inconsistencies and vulnerabilities.|
 
 - *Token Revocation*: process of invalidating or terminating an access token before its expiration time. Ensures the secure management of access tokens, maintaining control over resource access, and mitigating potential risks and unauthorized access.
+
+## Client Credentials Grant Type
+
+- No end user.
+- Communication between backend services (microservices).
+- Simplest grant type flow in OAuth 2.0.
+- No CSRF token needed, requests are not sent through browser so no potential CSRF attacks.
+
+## OpenID Connect (OIDC)
+
+- OpenID Connect is a protocol that sits on top of the OAuth 2.0 framework.
+- While OAuth 2.0 provides **authorization** via an `access token` containing scopes, OpenID Connect provides **authentication** by introduction a new `ID Token` which contains a new set of information and claims specifically for identity.
+- With the `ID Token`, OpenID Connect brings standard around sharing identity details among the applications.
+    - The client can not use this ID Token to access user details such as user ID, name, email address, and other relevant identity information.
+    - `ID Token` uses JWT Standard.
+- ODIC exposes the standardized `/userinfo` endpoint.
+    - The access token can be used to make requests to this endpoint, which is an API provided by the OpenID Connect provider.
+    - This endpoint allows the client to obtain additional user details or attributes based on the scope and permissions granted during the authentication process.
+- Identity is the key to any application.
+- At the core of modern authorization is OAuth 2.0, but OAuth 2.0 lacks an authentication component.
+- Implementing OpenID Connect on top of OAuth 2.0 completes an IAM (Identity & Access Management Strategy).
+- As more applications need to connect with each other and more identities are being populated on the Internet, the demand to be able to share these identities have increased.
+- With OpenID Connect, applications can share the identities easily and standard way.
+- While OAuth 2.0 focuses on authorization and access control, it does not provide a standardized way to obtain user identity details beyond the scope of access control.
+- With the user credentials in the client, the client can use it to populate user profile information or pre-fill email fields in the client application, or use the details for suer analytics and insights.
