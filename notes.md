@@ -302,3 +302,5 @@ http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 - Filtering authorization
 - `@PostAuthorize`: used when you want to evaluate the object that is sent back to the user.
 - `@PreAuthorize`: used to check whether the user can access the method.
+- `@PreFilter`: applied to type Collection interface like List, Set, Map, etc.
+- `@PostFilter`: return type must be of type Collection interface.
