@@ -388,3 +388,33 @@ spring.security.oauth2.client.registration.github.client-secret=
 ```
 
 - In this project, we use GitHub as the authorization server. In reality, larger organizations have their own authorization server and can self-configure the auth server.
+    - We want to have control over our own Authorization Server using KeyCloak.
+
+## Authorization Servers
+
+- [Keycloak](https://www.keycloak.org/) (Open source and free)
+    - [Getting Started with Keycloak in OpenJDK](https://www.keycloak.org/getting-started/getting-started-zip)
+    - Install Keycloak zip file
+    - Once installed, navigate to that folder in terminal and execute the command: `bin/kc.sh start-dev --http-port 8180` for development.
+    - Launch on browser: `http://localhost:8180/`
+- Okta
+- ForgeRock
+- Amazon Cognito
+
+## Creating a new Realm in KeyCloak
+
+- Each realm is a specific environment.
+- No longer using the database for authentication of users (no longer need to hash password).
+- Using KeyCloak for user authentication.
+
+## Resource Server
+
+- Added dependency for OAuth 2.0 Resource Server.
+- Web Application acts as the resource server, which accepts an access token.
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+</dependency>
+```

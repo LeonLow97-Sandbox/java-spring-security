@@ -24,4 +24,4 @@
 | Section 8                | Implementing Custom Filters with `addFilterBefore`, `addFilterAfter` and `addFilterAt`.                              |
 | Section 9                | Implementing JWT and adding 2 Filters for generating and validating JWT Tokens.                                      |
 | Section 10               | Method level security                                                                                                |
-| Section 12               | OAuth 2.0                                                                                                            |
+| Section OAuth2 GitHub    | OAuth 2.0                                                                                                            |
