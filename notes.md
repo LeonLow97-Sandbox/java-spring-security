@@ -457,4 +457,18 @@ spring.security.oauth2.resourceserver.jwt.jwk-set-uri = http://localhost:8180/re
 
 <img src="./lecture_notes/authorization_code_GET_request.png" width="60%"/>
 
+# Proof Key For Code Exchange (PKCE)
 
+- When public clients (JavaScript, Mobile applications) request Access Tokens from Authorization Server, the cannot store Client Secret in the browser or frontend source code as it is dangerous.
+- Have to use PKCE to resolve this security issue as Client Secret is usually stored in the backend.
+
+## Process of PKCE
+
+1. When user login, Client Application creates a cryptographically-random `code_verifier` and from this generates a `code_challenge`.
+  - `code_challenge` is a Base64-encoded string of the SHA 256 (configurable) hash of the code verifier.
+2. Redirects user to the Authorization Server along with the `code_challenge`.
+3. Authorization Server stores the `code_challenge` and redirects the user back to the application with an authorization code, which is good for one use.
+4. Client Application sends the authorization code and the `code_verifier` (created in step 1) to the Authorization Server.
+5. Authorization Server verified the `code_challenge` and `code_verifier`. If they are valid, it responds with ID Token and Access Token (optionally, a Refresh Token).
+
+- Let's say a hacker tries to tamper the authorization code in step 3. The hacker does not have the `code_verifier` and thus, will be unable to validate in step 5 with the `code_challenge` stored in the Authorization Server.
