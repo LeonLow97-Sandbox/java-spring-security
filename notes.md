@@ -389,11 +389,22 @@ spring.security.oauth2.client.registration.github.client-secret=
 - ForgeRock
 - Amazon Cognito
 
-## Creating a new Realm in KeyCloak
+<img src="./lecture_notes/keycloak_features.png" width="60%"/>
 
-- Each realm is a specific environment.
-- No longer using the database for authentication of users (no longer need to hash password).
-- Using KeyCloak for user authentication.
+## KeyCloak
+
+- Creating Realms in Keycloak
+    - Each realm is a specific environment.
+    - No longer using the database for authentication of users (no longer need to hash password).
+    - Using KeyCloak for user authentication.
+
+<img src="./lecture_notes/keycloak_realm.png" width="20%"/>
+
+- Creating Realm Roles
+    - Click Realm Roles in Keycloak and create roles.
+    - Once the role is created, click clients in the side bar and click 'Service accounts roles' tab to Assign role.
+        - Service accounts roles because we are using the grant type of Client Credentials, which means API to API communication.
+        - This is assigning role to the Client which is an API, not the resource owner/end user.
 
 ## Resource Server
 
@@ -414,4 +425,36 @@ spring.security.oauth2.client.registration.github.client-secret=
 ```
 spring.security.oauth2.resourceserver.jwt.jwk-set-uri = http://localhost:8180/realms/eazybankdev/protocol/openid-connect/certs
 ```
+
+- **URLs/Endpoints in KeyCloak Server**
+    - Use JSONView Chrome Extension for better view.
+    - "http://localhost:8180/realms/eazybankdev/.well-known/openid-configuration"
+- `token_endpoint` (Client Credentials)
+    - "token_endpoint":"http://localhost:8180/realms/eazybankdev/protocol/openid-connect/token"
+- `authorization_endpoint` (Authorization Code)
+    - "authorization_endpoint": "http://localhost:8180/realms/eazybankdev/protocol/openid-connect/auth"
+
+<img src="./lecture_notes/oauth2_client_credentials.png" width="60%"/>
+
+- Can go to https://jwt.io/ to validate the access token and the id token (Client Credentials Grant Type).
+
+## Add Authorization Header to request made to the Resource Server
+
+- In POSTMAN, add 'Authorization' header with 'Bearer' token and make requests to the resource server together with the Access Token provided by the Authorization Server.
+- Retrieve the *Authorization Code* through GET request by entering the user credentials with the Authorization Server.
+
+<img src="./lecture_notes/authorization_code_get_code.png" width="60%"/>
+
+- The user is then redirected to the specified redirect_uri and the code (authorization code) is in the url parameter for the client to extract.
+
+<img src="./lecture_notes/authorization_code_redirect_uri_code.png" width="60%"/>
+
+- After retrieving the *Authorization Code*, Client makes the POST request to Authorization Server to retrieve the Access Token.
+
+<img src="./lecture_notes/authorization_code_get_access_token.png" width="60%"/>
+
+- The client uses this Access Token to make requests to our Resource Server (which is the Java SpringBoot) by attaching the access token to the Authorization Header in the request `Bearer` token.
+
+<img src="./lecture_notes/authorization_code_GET_request.png" width="60%"/>
+
 
