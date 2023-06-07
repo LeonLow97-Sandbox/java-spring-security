@@ -25,19 +25,17 @@
 6. **Authentication Flow**: The `AuthenticationProvider` uses the `UserDetailsService` to load the user details for the provided username. It then compares the provided password with the store password (after applying any necessary password encoding). If the credentials are valid, the `AuthenticationProvider` constructs and returns a fully authenticated `Authentication` object.
 7. **Authentication Result**: The `AuthenticationManager` receives the authentication `Authentication` object from the `AuthenticationProvider` and returns it to the caller (usually the Spring Security framework or the application code). If the authentication is successful, the user is considered authenticated and can proceed to access protected resources.
 
------
+---
 
-- Notes:
-        - Spring Security supports multiple `AuthenticationProvider` implementations, allowing for various authentication mechanisms such as database-backed authentication (`DaoAuthenticationProvider`), LDAP authentication (`LdapAuthenticationProvider`), and more.
-        - The more appropriate `AuthenticationProvider` is selected based on the type of `Authentication` object being processed.
+- Notes: - Spring Security supports multiple `AuthenticationProvider` implementations, allowing for various authentication mechanisms such as database-backed authentication (`DaoAuthenticationProvider`), LDAP authentication (`LdapAuthenticationProvider`), and more. - The more appropriate `AuthenticationProvider` is selected based on the type of `Authentication` object being processed.
 
------
+---
 
 ## Spring Security Internal Flow (ChatGPT)
 
 1. User enters credentials into the login form.
 2. The request passes through the Spring Security filters for the first pass, including the `UsernamePasswordAuthenticationFilter`, which extracts the credentials and creates an `Authentication` object.
-3. The `AuthenticationManager` receives the 
+3. The `AuthenticationManager` receives the
 
 ## New Annotations
 
@@ -80,21 +78,18 @@ return http.build();
 
 ## Storing `UserDetails`
 
-- Only define 1 in the `ProjectSecurityConfig.java` which is the config file with annotation `@Configuration`.
-        - Spring will read and select the defined method of storing `UserDetails`.
+- Only define 1 in the `ProjectSecurityConfig.java` which is the config file with annotation `@Configuration`. - Spring will read and select the defined method of storing `UserDetails`.
 
-|Methods to Store|Description|
-|:-:|:-:|
-|`InMemoryUserDetailsManager`|Storing UserDetails such as username and password in memory. Typically used for demo application or testing scenarios where user information is static and not needed to be persisted in database.|
-|`JdbcUserDetailsManager`|Storing UserDetails in database with predefined SQL statements. Used for smaller application, not for production. The SQL scripts are predefined. If we want a different table name or different column name (e.g., email), then we need a new UserDetailsService and UserDetailsManager.|
-|`LdapUserDetailsManager`|*Uncommon* unless you have Ldap server with UserDetails.|
+|       Methods to Store       |                                                                                                                                        Description                                                                                                                                        |
+| :--------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| `InMemoryUserDetailsManager` |                                            Storing UserDetails such as username and password in memory. Typically used for demo application or testing scenarios where user information is static and not needed to be persisted in database.                                             |
+|   `JdbcUserDetailsManager`   | Storing UserDetails in database with predefined SQL statements. Used for smaller application, not for production. The SQL scripts are predefined. If we want a different table name or different column name (e.g., email), then we need a new UserDetailsService and UserDetailsManager. |
+|   `LdapUserDetailsManager`   |                                                                                                                 _Uncommon_ unless you have Ldap server with UserDetails.                                                                                                                  |
 
 ## SQL Tables for `JdbcUserDetailsManager` for MySQL
 
-- Can go with our own table name and column name (RECOMMENDED APPROACH).
-        - Cannot use `JdbcUserDetailsManager` for this case.
-        - Have to write own logic.
- 
+- Can go with our own table name and column name (RECOMMENDED APPROACH). - Cannot use `JdbcUserDetailsManager` for this case. - Have to write own logic.
+
 ## `UserDetailsService`
 
 - `UserDetailsService` interface is responsible for loading user-specific data during the authentication process.
@@ -117,19 +112,14 @@ return http.build();
 - `NoOpPasswordEncorder`: password in plain text (not recommended for production, for testing purposes only).
 - `StandardPasswordEncoder`: for legacy purposes and not secure (not recommended for production).
 - `Pbkdf2PasswordEncoder`: not secure, can apply brute-force attack to derive the correct plain-text password with strong GPU (not recommended for production).
-- ✅ `BCryptPasswordEncorder`: Used extensively, can set salt rounds, need higher CPU to hash the password. ✅✅✅
-        - `BCryptPasswordEncoder()`: default salt rounds of 10.
-        - `BCryptPasswordEncoder(20)`: salt rounds of 20. must be 4 - 31.
+- ✅ `BCryptPasswordEncorder`: Used extensively, can set salt rounds, need higher CPU to hash the password. ✅✅✅ - `BCryptPasswordEncoder()`: default salt rounds of 10. - `BCryptPasswordEncoder(20)`: salt rounds of 20. must be 4 - 31.
 - ✅ `SCryptPasswordEncorder`: Advanced version of BCryptPasswordEncoder. Takes into account CPU and memory. Performance issue because it takes a long time to process whenever we hash password.
 - ✅ `Argon2PasswordEncorder`: Takes into account CPU, memory and multiple threads. Performance issue because it takes a long time to process whenever we hash password.
 
 ## Custom Authentication Provider
 
 - Instead of using the default `DaoAuthenticationProvider`, we should use a custom authentication provider.
-- Can have multiple authentication providers
-        - Requirement 1: accept username and password
-        - Requirement 2: accept OAUTH2 authentication
-        - Requirement 3: accept OTP authentication
+- Can have multiple authentication providers - Requirement 1: accept username and password - Requirement 2: accept OAUTH2 authentication - Requirement 3: accept OTP authentication
 - `authenticate()` method receives and returns Authentication object. Implement all the custom authentication logic inside `authenticate` method.
 - Deleted custom `UserDetailsService` because we no longer want to use `DaoAuthenticationProvider`
 
@@ -137,7 +127,7 @@ return http.build();
 
 - When a browser makes a cross-origin request to a backend server, it first performs a pre-flight request to determine if the backend server allows the actual API request.
 - The pre-flight request is an HTTP OPTIONS request that the browser sends to the server with the intention of checking the server's CORS (Cross-Origin Resource Sharing) policy.
-- The browser includes certain *headers* in the pre-flight request, such as Origin and Access-Control-Request-Method, to provide information about the intended cross-origin request.
+- The browser includes certain _headers_ in the pre-flight request, such as Origin and Access-Control-Request-Method, to provide information about the intended cross-origin request.
 - If the server allows the specific cross-origin request from the browser, it responds with appropriate headers, including Access-Control-Allow-Origin, Access-Control-Allow-Methods, and others, indicating that the actual API request can proceed.
 
 <img src="./lecture_notes/preflight-request.jpg" />
@@ -159,13 +149,13 @@ return http.build();
 - Spring Security provides protection against CSRF **by default**.
 - Spring Security applies CSRF protection to all HTTP methods, excluding GET, to prevent unauthorized actions.
 - To handle CSRF attack, application needs to determine if HTTP request is generated via the application's user interface.
-    - Use a CSRF token which is a secure random token that is used to prevent CSRF attacks.
-    - CSRF related cookie in browser.
+  - Use a CSRF token which is a secure random token that is used to prevent CSRF attacks.
+  - CSRF related cookie in browser.
 - `CsrfTokenRequestAttributeHandler`: Implementation of `CsrfTokenRequestHandler` interface that is capable of making the `CsrfToken` available as a request attribute and resolving the token value as either a header or parameter value of the request.
 - Sent to UI Applicatoin
-    - `DEFAULT_CSRF_COOKIE_NAME`: "XSRF-TOKEN"
-    - `DEFAULT_CSRF_HEADER_NAME`: "X-XSRF-TOKEN"
-    - `withHttpOnlyFalse`: to allows javascript application in Angular to read cookie value.
+  - `DEFAULT_CSRF_COOKIE_NAME`: "XSRF-TOKEN"
+  - `DEFAULT_CSRF_HEADER_NAME`: "X-XSRF-TOKEN"
+  - `withHttpOnlyFalse`: to allows javascript application in Angular to read cookie value.
 
 ## CSRF Procedure
 
@@ -177,9 +167,9 @@ window.sessionStorage.setItem("XSRF-TOKEN", xsrf);
 
 ```js
 // Before sending any request to Backend Server
-let xsrf = sessionStorage.getItem("XSRF-TOKEN");
+let xsrf = sessionStorage.getItem('XSRF-TOKEN');
 if (xsrf) {
-    httpHeaders = httpHeaders.append("X-XSRF-TOKEN", xsrf);
+  httpHeaders = httpHeaders.append('X-XSRF-TOKEN', xsrf);
 }
 ```
 
@@ -214,7 +204,7 @@ http.securityContext((context) -> context
 <img src="./lecture_notes/authentication-vs-authorization.png" />
 
 - Authorities/Roles information in Spring Security is stored inside `GrantedAuthority`.
-    - Inside `UserDetails` interface which is a contract of the user inside the Spring Security, the authorities of a user stored in the form of collection in `GrantedAuthority`.
+  - Inside `UserDetails` interface which is a contract of the user inside the Spring Security, the authorities of a user stored in the form of collection in `GrantedAuthority`.
 - `SimpleGrantedAuthority` is the default implementation class of GrantedAuthority interface inside Spring Security framework.
 
 ```java
@@ -241,8 +231,8 @@ private Set<Authority> authorities
 ## Internal Filters of Spring Security
 
 - For DEVELOPMENT only
-    - `@EnableWebSecurity(debug = true)` to see the debugging of the security details.
-    - `logging.level.org.springframework.security.web.FilterChainProxy=DEBUG`: enable logging details by adding this line into `application.properties`.
+  - `@EnableWebSecurity(debug = true)` to see the debugging of the security details.
+  - `logging.level.org.springframework.security.web.FilterChainProxy=DEBUG`: enable logging details by adding this line into `application.properties`.
 
 ## Custom Filters in Spring Security
 
@@ -270,10 +260,10 @@ AuthoritiesLoggingAfterFilter
 - Can include the following filters into our own custom filters.
 - `GenericFilterBean`: abstract class. Implementation of `Filter` interface. Provides details of config parameters, init parameters, and servlet context parameters configured in web.xml.
 - `OncePerRequestFilter`: filter is executed only once per request.
-    - Previously, in our custom filters, we write our business logic in the method `doFilter()` but now this method is being used to check whether the filter has been invoked.
-    - So, we cannot override the `doFilter()` method in the `OncePerRequestFilter`.
-    - To override the business logic, we will write it inside the `doFilterInternal()` method.
-    - Can use `shouldNotFilter()` method to have exceptional filtering scenarios. E.g., maybe you want this filter to be applied to certain requests.
+  - Previously, in our custom filters, we write our business logic in the method `doFilter()` but now this method is being used to check whether the filter has been invoked.
+  - So, we cannot override the `doFilter()` method in the `OncePerRequestFilter`.
+  - To override the business logic, we will write it inside the `doFilterInternal()` method.
+  - Can use `shouldNotFilter()` method to have exceptional filtering scenarios. E.g., maybe you want this filter to be applied to certain requests.
 
 ## JWT Token Configuration
 
@@ -284,20 +274,18 @@ http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 
 - `Issuer`: Person or organization issuing the token.
 - `Subject`: JWT Token
-- In Angular, saving the JWT Token in the browser session storage after receiving it from the response header in Spring Security.
-        - `window.sessionStorage.setItem("Authorization", responseData.headers.get('Authorization')!);`
+- In Angular, saving the JWT Token in the browser session storage after receiving it from the response header in Spring Security. - `window.sessionStorage.setItem("Authorization", responseData.headers.get('Authorization')!);`
 - In Angular, for every request, send back the JWT Token to Spring Security to validate the token.
-    ```js
-    let authorization = sessionStorage.getItem('Authorization')
-    if (authorization) {
-            httpHeaders = httpHeaders.append('Authorization', authorization);
-    }
-    ```
+  ```js
+  let authorization = sessionStorage.getItem('Authorization');
+  if (authorization) {
+    httpHeaders = httpHeaders.append('Authorization', authorization);
+  }
+  ```
 
 # Method Level Security
 
-- `@EnableMethodSecurity`
-        - properties: `prePostEnabled`, `securedEnabled`, `jsr250Enabled`
+- `@EnableMethodSecurity` - properties: `prePostEnabled`, `securedEnabled`, `jsr250Enabled`
 - Invocation authorization
 - Filtering authorization
 - `@PostAuthorize`: used when you want to evaluate the object that is sent back to the user.
@@ -311,16 +299,16 @@ http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 - Free and Open Source Protocol.
 - Uses an access token which provides limited access to someone, without handing over full control in the form of the master key.
 - OAuth 2.0 resolves the following problems:
-    - The client need to send the user credentials every time and authentication logic has to be executed every time with all the requests.
-    - The authentication and authorization logic being maintained in different places.
+  - The client need to send the user credentials every time and authentication logic has to be executed every time with all the requests.
+  - The authentication and authorization logic being maintained in different places.
 - OAuth framework creates new grant types:
-    - Authorization Code
-    - PKCE
-    - Client Credentials
-    - Device Code (E.g., Apple TV, Android TV): No keyboard to enter credentials
-    - Refresh Token
-    - Implicit Flow (Legacy)
-    - Password Grant (Legacy)
+  - Authorization Code
+  - PKCE
+  - Client Credentials
+  - Device Code (E.g., Apple TV, Android TV): No keyboard to enter credentials
+  - Refresh Token
+  - Implicit Flow (Legacy)
+  - Password Grant (Legacy)
 - [Using OAuth 2.0 to Access Google APIs](https://developers.google.com/identity/protocols/oauth2)
 - [OAuth 2.0 Playground](https://oauth.com/playground)
 
@@ -334,14 +322,14 @@ http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 
 ## Why is Implicit Flow less secure than OAuth 2.0?
 
-|Security Concerns|Implicit Flow|OAuth 2.0 Flow|
-|---|---|---|
-|Access Token Exposure|Access token is exposed in the browser's URL fragment, increasing the risk of leakage and potential unauthorized access.|Access token is transmitted securely to the client's backend server and not exposed to the client-side application.|
-|Token Validation|Lack of token validation on the client side.|Tokens are validated by the authorization server, ensuring authenticity and integrity.|
-|Token Revocation|Lack of a straightforward mechanism for token revocation, reducing control over token lifetimes.|Token revocation is supported, allowing better control over access and addressing scenarios like device compromise or user revocation.|
-|Centralized Management|Decentralized token management, relying on client-side implementations.|Token management occurs centrally within the authorization server, minimizing inconsistencies and vulnerabilities.|
+| Security Concerns      | Implicit Flow                                                                                                            | OAuth 2.0 Flow                                                                                                                         |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Access Token Exposure  | Access token is exposed in the browser's URL fragment, increasing the risk of leakage and potential unauthorized access. | Access token is transmitted securely to the client's backend server and not exposed to the client-side application.                    |
+| Token Validation       | Lack of token validation on the client side.                                                                             | Tokens are validated by the authorization server, ensuring authenticity and integrity.                                                 |
+| Token Revocation       | Lack of a straightforward mechanism for token revocation, reducing control over token lifetimes.                         | Token revocation is supported, allowing better control over access and addressing scenarios like device compromise or user revocation. |
+| Centralized Management | Decentralized token management, relying on client-side implementations.                                                  | Token management occurs centrally within the authorization server, minimizing inconsistencies and vulnerabilities.                     |
 
-- *Token Revocation*: process of invalidating or terminating an access token before its expiration time. Ensures the secure management of access tokens, maintaining control over resource access, and mitigating potential risks and unauthorized access.
+- _Token Revocation_: process of invalidating or terminating an access token before its expiration time. Ensures the secure management of access tokens, maintaining control over resource access, and mitigating potential risks and unauthorized access.
 
 ## Client Credentials Grant Type
 
@@ -355,11 +343,11 @@ http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
 - OpenID Connect is a protocol that sits on top of the OAuth 2.0 framework.
 - While OAuth 2.0 provides **authorization** via an `access token` containing scopes, OpenID Connect provides **authentication** by introduction a new `ID Token` which contains a new set of information and claims specifically for identity.
 - With the `ID Token`, OpenID Connect brings standard around sharing identity details among the applications.
-    - The client can not use this ID Token to access user details such as user ID, name, email address, and other relevant identity information.
-    - `ID Token` uses JWT Standard.
+  - The client can not use this ID Token to access user details such as user ID, name, email address, and other relevant identity information.
+  - `ID Token` uses JWT Standard.
 - ODIC exposes the standardized `/userinfo` endpoint.
-    - The access token can be used to make requests to this endpoint, which is an API provided by the OpenID Connect provider.
-    - This endpoint allows the client to obtain additional user details or attributes based on the scope and permissions granted during the authentication process.
+  - The access token can be used to make requests to this endpoint, which is an API provided by the OpenID Connect provider.
+  - This endpoint allows the client to obtain additional user details or attributes based on the scope and permissions granted during the authentication process.
 - Identity is the key to any application.
 - At the core of modern authorization is OAuth 2.0, but OAuth 2.0 lacks an authentication component.
 - Implementing OpenID Connect on top of OAuth 2.0 completes an IAM (Identity & Access Management Strategy).
@@ -388,15 +376,15 @@ spring.security.oauth2.client.registration.github.client-secret=
 ```
 
 - In this project, we use GitHub as the authorization server. In reality, larger organizations have their own authorization server and can self-configure the auth server.
-    - We want to have control over our own Authorization Server using KeyCloak.
+  - We want to have control over our own Authorization Server using KeyCloak.
 
 ## Authorization Servers
 
 - [Keycloak](https://www.keycloak.org/) (Open source and free)
-    - [Getting Started with Keycloak in OpenJDK](https://www.keycloak.org/getting-started/getting-started-zip)
-    - Install Keycloak zip file
-    - Once installed, navigate to that folder in terminal and execute the command: `bin/kc.sh start-dev --http-port 8180` for development.
-    - Launch on browser: `http://localhost:8180/`
+  - [Getting Started with Keycloak in OpenJDK](https://www.keycloak.org/getting-started/getting-started-zip)
+  - Install Keycloak zip file
+  - Once installed, navigate to that folder in terminal and execute the command: `bin/kc.sh start-dev --http-port 8180` for development.
+  - Launch on browser: `http://localhost:8180/`
 - Okta
 - ForgeRock
 - Amazon Cognito
@@ -418,3 +406,12 @@ spring.security.oauth2.client.registration.github.client-secret=
     <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
 </dependency>
 ```
+
+- Set the public key in the resource server in `application.properties`.
+- The authorization server digitally signs the access token using its private key.
+- The resource server can then verify the signature using the public key(s) obtained from the JWK set.
+
+```
+spring.security.oauth2.resourceserver.jwt.jwk-set-uri = http://localhost:8180/realms/eazybankdev/protocol/openid-connect/certs
+```
+
