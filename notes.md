@@ -483,3 +483,37 @@ spring.security.oauth2.resourceserver.jwt.jwk-set-uri = http://localhost:8180/re
 ## Keycloak Angular
 
 - [Keycloak Angular](https://www.npmjs.com/package/keycloak-angular)
+
+```js
+// added to angular to apply sha256 to code_verifier and base64 encode to code_challenge
+"allowedCommonJsDependencies": [
+  "base64-js",
+  "js-sha256"
+],
+```
+
+```js
+// Setting up key cloak in angular
+function initializeKeycloak(keycloak: KeycloakService) {
+  return () =>
+    keycloak.init({
+      config: {
+        url: 'http://localhost:8180/',
+        realm: 'eazybankdev',
+        clientId: 'eazypublicclient',
+      },
+      initOptions: {
+        pkceMethod: 'S256',
+        redirectUri: 'http://localhost:4200/dashboard',
+      },loadUserProfileAtStartUp: false
+    });
+}
+```
+
+## Keycloak Features
+
+- [Keycloak Documentation](https://www.keycloak.org/documentation)
+- [Define custom theme for Keycloak Auth Server](https://www.keycloak.org/docs/latest/server_development/index.html#_themes)
+- [Keycloak Admin REST API](https://www.keycloak.org/docs-api/21.1.1/rest-api/index.html)
+  - to create new role
+  - to create new user
