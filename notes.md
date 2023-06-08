@@ -425,7 +425,8 @@ spring.security.oauth2.client.registration.github.client-secret=
 ```
 spring.security.oauth2.resourceserver.jwt.jwk-set-uri = http://localhost:8180/realms/eazybankdev/protocol/openid-connect/certs
 ```
-
+- To use Keycloak
+  - `http://localhost:8180/`
 - **URLs/Endpoints in KeyCloak Server**
     - Use JSONView Chrome Extension for better view.
     - "http://localhost:8180/realms/eazybankdev/.well-known/openid-configuration"
@@ -478,3 +479,7 @@ spring.security.oauth2.resourceserver.jwt.jwk-set-uri = http://localhost:8180/re
 3. Authorization Server stores the `code_challenge` and redirects the user back to the application with an authorization code, which is good for one use.
 4. Client Application sends the authorization code and the `code_verifier` (created in step 1) to the Authorization Server.
 5. Authorization Server verified the `code_challenge` and `code_verifier`. If they are valid, it responds with ID Token and Access Token (optionally, a Refresh Token).
+
+## Keycloak Angular
+
+- [Keycloak Angular](https://www.npmjs.com/package/keycloak-angular)
